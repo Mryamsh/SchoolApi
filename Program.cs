@@ -21,6 +21,15 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
         options.JsonSerializerOptions.WriteIndented = true;
     });
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReactApp",
+        policy => policy
+            .WithOrigins("http://localhost:5173") // React app URL
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+    );
+});
 
 
 var app = builder.Build();
@@ -31,7 +40,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseCors("AllowReactApp");
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
