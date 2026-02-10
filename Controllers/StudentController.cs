@@ -105,28 +105,33 @@ namespace SchoolApi.Controllers
 
 
         [HttpPost("EnrollStudent")]
-        public async Task<IActionResult> EnrollStudent([FromBody] CourseStudent enrollment)
+        public async Task<IActionResult> EnrollStudent([FromBody] EnrollStudentDto dto)
         {
-
-            var studentExists = await _context.Students.AnyAsync(s => s.Id == enrollment.StudentId);
+            var studentExists = await _context.Students.AnyAsync(s => s.Id == dto.StudentId);
             if (!studentExists)
                 return NotFound("Student not found");
 
-
-            var courseExists = await _context.Courses.AnyAsync(c => c.Id == enrollment.CourseId);
+            var courseExists = await _context.Courses.AnyAsync(c => c.Id == dto.CourseId);
             if (!courseExists)
                 return NotFound("Course not found");
 
             var alreadyEnrolled = await _context.CourseStudents
-                .AnyAsync(cs => cs.StudentId == enrollment.StudentId && cs.CourseId == enrollment.CourseId);
+                .AnyAsync(cs => cs.StudentId == dto.StudentId && cs.CourseId == dto.CourseId);
             if (alreadyEnrolled)
                 return BadRequest("Student is already enrolled in this course");
 
+            var enrollment = new CourseStudent
+            {
+                StudentId = dto.StudentId,
+                CourseId = dto.CourseId
+            };
 
             _context.CourseStudents.Add(enrollment);
             await _context.SaveChangesAsync();
 
-            return Ok(enrollment);
+            return Ok(new { message = "Student enrolled successfully" });
         }
     }
+
+
 }

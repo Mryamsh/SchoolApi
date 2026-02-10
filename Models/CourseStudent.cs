@@ -8,4 +8,11 @@ namespace SchoolApi.Models
         public int CourseId { get; set; }
         public Course? Course { get; set; }
     }
+
+
+    public class EnrollStudentDto
+    {
+        public int StudentId { get; set; }
+        public int CourseId { get; set; }
+    }
 }
