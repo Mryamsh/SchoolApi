@@ -11,4 +11,14 @@ namespace SchoolApi.Models
         public ICollection<CourseStudent>? CourseStudents { get; set; }
 
     }
+
+
+    public class CourseDto
+    {
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public DateTime CourseDatetime { get; set; }
+        public string LecturerName { get; set; }
+    }
 }

@@ -18,15 +18,22 @@ namespace SchoolApi.Controllers
 
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Course>>> GetCourses()
+        public async Task<ActionResult<IEnumerable<CourseDto>>> GetCourses()
         {
-            return await _context.Courses
+            var courses = await _context.Courses
                 .Include(c => c.Lecturer)
-                .Include(c => c.CourseStudents)
-                    .ThenInclude(cs => cs.Student)
+                .Select(c => new CourseDto
+                {
+                    Id = c.Id,
+                    Title = c.Title,
+                    Description = c.Description,
+                    CourseDatetime = c.CourseDatetime,
+                    LecturerName = c.Lecturer.Name
+                })
                 .ToListAsync();
-        }
 
+            return Ok(courses);
+        }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Course>> GetCourse(int id)
