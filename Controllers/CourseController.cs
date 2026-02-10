@@ -47,6 +47,10 @@ namespace SchoolApi.Controllers
         [HttpPost]
         public async Task<ActionResult<Course>> CreateCourse(Course course)
         {
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             _context.Courses.Add(course);
             await _context.SaveChangesAsync();
 
