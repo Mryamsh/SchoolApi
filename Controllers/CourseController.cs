@@ -102,6 +102,29 @@ namespace SchoolApi.Controllers
         }
 
 
+
+        [HttpGet("student/{studentId}")]
+        public IActionResult GetCoursesByStudent(int studentId)
+        {
+            var courses = _context.CourseStudents
+                .Where(cs => cs.StudentId == studentId)
+                .Select(cs => new
+                {
+                    cs.Course.Id,
+                    cs.Course.Title,
+                    cs.Course.Description,
+                    cs.Course.CourseDatetime,
+                    LecturerName = cs.Course.Lecturer.Name
+                })
+                .ToList();
+
+            if (!courses.Any())
+                return NotFound("No courses found for this student");
+
+            return Ok(courses);
+        }
+
+
         // [HttpPost("Enroll")]
         // public async Task<IActionResult> EnrollStudent([FromBody] CourseStudent enrollment)
         // {
