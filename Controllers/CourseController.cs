@@ -34,6 +34,25 @@ namespace SchoolApi.Controllers
 
             return Ok(courses);
         }
+        [HttpGet("byDate")]
+        public async Task<ActionResult<IEnumerable<CourseDto>>> GetCoursesByDate()
+        {
+            var courses = await _context.Courses
+                .Include(c => c.Lecturer)
+                .Where(c => c.CourseDatetime >= DateTime.Now) // 👈 filter not expired
+                .OrderBy(c => c.CourseDatetime) // 👈 closest first
+                .Select(c => new CourseDto
+                {
+                    Id = c.Id,
+                    Title = c.Title,
+                    Description = c.Description,
+                    CourseDatetime = c.CourseDatetime,
+                    LecturerName = c.Lecturer.Name
+                })
+                .ToListAsync();
+
+            return Ok(courses);
+        }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Course>> GetCourse(int id)
