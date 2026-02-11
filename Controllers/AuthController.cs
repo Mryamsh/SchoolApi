@@ -12,8 +12,15 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("login")]
-    public IActionResult Login(LoginDto model)
+    public IActionResult Login([FromBody] LoginDto model)
     {
+        if (model == null)
+        {
+            return BadRequest("Model is null");
+        }
+
+        Console.WriteLine(model.Email);
+        Console.WriteLine(model.Password);
         var user = _context.Students
             .FirstOrDefault(u =>
                 u.Email == model.Email &&
