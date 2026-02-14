@@ -19,8 +19,8 @@ public class AuthController : ControllerBase
             return BadRequest("Model is null");
         }
 
-        Console.WriteLine(model.Email);
-        Console.WriteLine(model.Password);
+        //  Console.WriteLine(model.Email);
+        //Console.WriteLine(model.Password);
         var user = _context.Students
             .FirstOrDefault(u =>
                 u.Email == model.Email &&

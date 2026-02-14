@@ -117,6 +117,8 @@ namespace SchoolApi.Controllers
 
             var alreadyEnrolled = await _context.CourseStudents
                 .AnyAsync(cs => cs.StudentId == dto.StudentId && cs.CourseId == dto.CourseId);
+
+
             if (alreadyEnrolled)
                 return BadRequest("Student is already enrolled in this course");
 

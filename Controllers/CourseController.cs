@@ -127,7 +127,7 @@ namespace SchoolApi.Controllers
         {
             var courses = _context.Courses
                 .Where(c => c.CourseStudents.Any(cs => cs.StudentId == studentId))
-                .OrderBy(c => c.CourseDatetime) // 👈 THIS LINE
+                .OrderBy(c => c.CourseDatetime) //  THIS LINE
                 .Select(c => new
                 {
                     c.Id,

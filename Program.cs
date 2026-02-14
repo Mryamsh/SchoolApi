@@ -42,7 +42,15 @@ builder.Services.AddCors(options =>
     );
 });
 
-
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReactAppanother",
+        policy => policy
+            .WithOrigins("http://localhost:5174") // React app URL
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+    );
+});
 
 // builder.Services.AddCors(options =>
 // {
@@ -67,6 +75,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 app.UseCors("AllowReactApp");
+app.UseCors("AllowReactAppanother");
+
 // app.UseCors("AllowAll");
 app.UseHttpsRedirection();
 
