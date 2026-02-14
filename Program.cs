@@ -32,35 +32,27 @@ builder.Services.AddControllers()
     options.JsonSerializerOptions.WriteIndented = true; // optional, for readability
 });
 
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowReactApp",
-        policy => policy
-            .WithOrigins("http://localhost:5173") // React app URL
-            .AllowAnyHeader()
-            .AllowAnyMethod()
-    );
-});
-
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowReactAppanother",
-        policy => policy
-            .WithOrigins("http://localhost:5174") // React app URL
-            .AllowAnyHeader()
-            .AllowAnyMethod()
-    );
-});
-
 // builder.Services.AddCors(options =>
 // {
-//     options.AddPolicy("AllowAll",
+//     options.AddPolicy("AllowReactApp",
 //         policy => policy
-//             .AllowAnyOrigin()
+//             .WithOrigins("http://localhost:5173") // React app URL
 //             .AllowAnyHeader()
 //             .AllowAnyMethod()
 //     );
 // });
+
+
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        policy => policy
+            .AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+    );
+});
 
 
 
@@ -74,10 +66,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-app.UseCors("AllowReactApp");
-app.UseCors("AllowReactAppanother");
+//app.UseCors("AllowReactApp");
 
-// app.UseCors("AllowAll");
+
+app.UseCors("AllowAll");
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
