@@ -10,10 +10,11 @@ namespace SchoolApi.Controllers
     public class LecturerController : ControllerBase
     {
         private readonly AppDbContext _context;
-
-        public LecturerController(AppDbContext context)
+        private readonly ILogger<LecturerController> _logger;
+        public LecturerController(AppDbContext context, ILogger<LecturerController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
 
@@ -106,26 +107,44 @@ namespace SchoolApi.Controllers
         [HttpPost("upload")]
         public async Task<IActionResult> UploadImage(IFormFile file)
         {
+            _logger.LogInformation("UploadImage called");
+
             if (file == null || file.Length == 0)
-                return BadRequest("No file uploaded.");
-
-            var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads");
-
-            if (!Directory.Exists(uploadsFolder))
-                Directory.CreateDirectory(uploadsFolder);
-
-            var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-            var filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
-            using (var stream = new FileStream(filePath, FileMode.Create))
             {
-                await file.CopyToAsync(stream);
+                _logger.LogWarning("No file uploaded");
+                return BadRequest("No file uploaded.");
             }
 
-            var imageUrl = $"{Request.Scheme}://{Request.Host}/uploads/{uniqueFileName}";
+            try
+            {
+                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads");
 
-            return Ok(new { url = imageUrl });
+                if (!Directory.Exists(uploadsFolder))
+                {
+                    _logger.LogInformation("Creating uploads folder at {path}", uploadsFolder);
+                    Directory.CreateDirectory(uploadsFolder);
+                }
+
+                var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                _logger.LogInformation("Saving file to {filePath}", filePath);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
+
+                var imageUrl = $"{Request.Scheme}://{Request.Host}/uploads/{uniqueFileName}";
+                _logger.LogInformation("File uploaded successfully: {imageUrl}", imageUrl);
+
+                return Ok(new { url = imageUrl });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error uploading file");
+                return StatusCode(500, "Internal server error");
+            }
         }
-
     }
 }
