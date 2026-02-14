@@ -165,3 +165,10 @@
 /Users/mryamshukur/API/SchoolApi/obj/Debug/net9.0/SchoolApi.pdb
 /Users/mryamshukur/API/SchoolApi/obj/Debug/net9.0/SchoolApi.genruntimeconfig.cache
 /Users/mryamshukur/API/SchoolApi/obj/Debug/net9.0/ref/SchoolApi.dll
+/Users/mryamshukur/API/SchoolApi/bin/Debug/net9.0/out/web.config
+/Users/mryamshukur/API/SchoolApi/bin/Debug/net9.0/out/appsettings.Development.json
+/Users/mryamshukur/API/SchoolApi/bin/Debug/net9.0/out/appsettings.json
+/Users/mryamshukur/API/SchoolApi/bin/Debug/net9.0/out/SchoolApi.deps.json
+/Users/mryamshukur/API/SchoolApi/bin/Debug/net9.0/out/SchoolApi.runtimeconfig.json
+/Users/mryamshukur/API/SchoolApi/bin/Debug/net9.0/out/SchoolApi.staticwebassets.endpoints.json
+/Users/mryamshukur/API/SchoolApi/obj/Debug/net9.0/SchoolApi.sourcelink.json

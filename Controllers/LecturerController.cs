@@ -94,5 +94,38 @@ namespace SchoolApi.Controllers
         {
             return _context.Lecturers.Any(e => e.Id == id);
         }
+
+
+
+        /// <summary>
+        /// ///
+        /// </summary>
+        ///
+        /// <returns></returns>
+
+        [HttpPost("upload")]
+        public async Task<IActionResult> UploadImage(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+                return BadRequest("No file uploaded.");
+
+            var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads");
+
+            if (!Directory.Exists(uploadsFolder))
+                Directory.CreateDirectory(uploadsFolder);
+
+            var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+            var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+
+            var imageUrl = $"{Request.Scheme}://{Request.Host}/uploads/{uniqueFileName}";
+
+            return Ok(new { url = imageUrl });
+        }
+
     }
 }

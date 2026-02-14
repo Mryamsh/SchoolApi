@@ -9,6 +9,7 @@ namespace SchoolApi.Models
         public string? LevelOfStudy { get; set; }
         public string? Password { get; set; }
         public ICollection<Course>? Courses { get; set; }
+        public string? ImgUrl { get; set; }
 
     }
 }
